@@ -1,0 +1,92 @@
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.scroll {
+        max-height: 200px;
+        overflow-y: auto;
+        padding-right: 30px;
+        }
+
+.table thead tr th, .table tbody tr td {
+    border: none;
+}
+
+.navbar {
+  background-color: #4B8E96;
+  line-height: 20px;
+  color: #ffffff;
+
+}
+*/
+#allignright {
+    float: right;}
+
+
+/* unvisited link
+.navbar a:link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* visited link
+.navbar a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* mouse over link
+.navbar a:hover {
+  color: #e0e0e0e;
+  text-decoration: none;
+}
+
+/* selected link
+.navbar a:active {
+  color: #e0e0e0e;
+  text-decoration: none;
+}
+
+/* unvisited link */
+a:link {
+  text-decoration: none;
+
+
+}
+
+/* visited link */
+a:visited {
+  text-decoration: none;
+
+}
+
+/* mouse over link */
+a:hover {
+  text-decoration: none;
+
+}
+
+/* selected link */
+a:active {
+  text-decoration: none;
+
+}
+
+
+.simple:visited {
+    color: #e42313
+    }
+
+.simple:active {
+    color: #e42313
+    }
+
+.simple:hover {
+    color: #e42313
+    }
+
+.simple:link {
+    color: #e42313
+    }

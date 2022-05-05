@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Reminder{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h2>{{survey.survey_name}}</h2>
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <td><strong>Category</strong></td>
+                        <td>{{survey.category}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Church</strong></td>
+                        <td>{{entity.entity_name}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Starting Date</strong></td>
+                        <td>{{survey.survey_start_date}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Occurances</strong></td>
+                        <td>{{survey.survey_occurances}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interval</strong></td>
+                        <td>{{survey.survey_interval}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h2>Questions</h2>
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>Question</th>
+                        <th>Question Type</th>
+                    </tr>
+                    {% for question in questions %}
+                        <tr>
+                            <td>{{question.question_content}}</td>
+                            <td>{{question.question_type}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    {% if breakdowncount > 0 %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row no-gutters">
+
+                        <div class="col-md-10">
+                            <h2>Reminders</h2>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-end align-self-start ">
+                            <a class="btn btn-outline-success btn " href="{% url 'surveybreakdownadd' survey.id entity.id surveyentity.id %}" role="button" >Add +</a>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th>Name</th>
+                            <th>Reminder Time</th>
+                            <th>Assigned Users</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                        {% for breakdown in breakdowns %}
+                            <tr class="align-middle">
+                                <td>
+                                    {{breakdown.surveybreakdown_name}}
+                                </td>
+                                <td>
+                                    {{breakdown.surveybreakdown_time}}
+                                </td>
+                                <td>
+                                    {% for item in breakdownprofilesactive %}
+
+
+                                        {% for profile in breakdown.profile.all %}
+                                            {% if item.profile.id == profile.id and item.surveybreakdown.id == breakdown.id %}
+
+                                               <span class="btn btn-sm btn-outline-light text-dark text-middle ">{{profile.first_name}} {{profile.last_name}}
+                                                <a style="height:12px; width:12px;" class="btn rounded-circle btn-outline-danger p-0" href="{% url 'surveybreakdownuserdelete' profile.id breakdown.id survey.id entity.id surveyentity.id %}"></a>
+                                                </span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                </td>
+                                <td class="text-end">
+                                    <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveybreakdownuseradd' breakdown.id survey.id entity.id surveyentity.id %}">Add User</a>
+                                    {% if  breakdowncount > 1 %}
+                                    <a class="btn btn-outline-danger btn-sm m-0" href="{% url 'surveybreakdowndelete' breakdown.id survey.id entity.id surveyentity.id %}">Delete</a>
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+{% endif %}
+</div>
+
+{% endblock %}

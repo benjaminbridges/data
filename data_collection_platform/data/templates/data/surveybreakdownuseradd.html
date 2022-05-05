@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}Add User{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col" style="max-width:500px">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h1>Add User</h1>
+                <form class="my-4" method="post">
+                    Date From*<br>
+                                            <div id="div_id_notes" class="form-group">
+
+                    <input type="date" id="otherdate" name="otherdate" required class="form-control">
+                        </div>
+                    {{ form.profile|as_crispy_field }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn mt-4 btn-outline-success">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

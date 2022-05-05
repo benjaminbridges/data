@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}New Organisation{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h1>New Organisation</h1>
+                {{ form.media }}
+                <form method="post" enctype="multipart/form-data">
+                    <table>
+                        {{ form|crispy }}
+                    </table>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success mt-4">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

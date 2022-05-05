@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Surveys{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                 <div class="row nomargins">
+                     <div class="col-9">
+                        <h1>Surveys</h1>
+                     </div>
+                     {% if request.user.profile.site_permission in 'sa, entity, org' %}
+                     <div class="col-3 d-flex justify-content-end align-self-center ">
+                         <a href="{% url 'surveynew' %}" class="btn btn-outline-success btn-lg" >New Survey</a>
+                     </div>
+                     {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2>Survey List</h2>
+                    </div>
+                    <div class="col d-flex justify-content-end align-self-end ">
+                        <div class="buttons-toolbar mb-3"></div>
+                    </div>
+                </div>
+                <table id="table1" data-toggle="table" class="table table-borderless table-striped table-hover"
+                           data-search="true" data-show-columns="true" data-show-columns-toggle-all="true"
+                           data-buttons-toolbar=".buttons-toolbar" data-minimum-count-columns="3">
+                    <thead>
+                        <tr class="align-middle">
+                            <th data-sortable="true" >Name</th>
+                            <th data-sortable="true" data-sorter="starsSorter" class="d-none d-lg-table-cell">Starting Date</th>
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Occurances</th>
+                            <th class="d-none d-lg-table-cell">Interval</th>
+                            <th data-sortable="true" >Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if nosurveys == True %}
+                        <tr><td>no surveys</td><td></td><td></td><td></td></tr>
+                        {% else %}
+                            {% for survey in unassigned %}
+                                <tr class="align-middle">
+                                    <td>{{survey.survey_name}}</td>
+                                    {% if survey.survey.survey_entity_to_set_times == False %}
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_start_date}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_occurances}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_interval}}</td>
+                                    {% else %}
+                                        {% if survey.survey_start_date == None %}
+                                            <td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td>
+                                        {% else %}
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_start_date}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_occurances}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_interval}}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                    <td class="text-success"><strong>Unassigned</strong></td>
+                                    <td class="text-end">
+                                        <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveydetail' survey.id %}">Edit</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            {% for survey in createdbyuser %}
+                                <tr class="align-middle">
+                                    <td>{{survey.survey_name}}</td>
+                                    {% if survey.survey.survey_entity_to_set_times == False %}
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_start_date}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_occurances}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_interval}}</td>
+                                    {% else %}
+                                        {% if survey.survey_start_date == None %}
+                                            <td class="d-none d-lg-table-cell"></td class="d-none d-lg-table-cell"><td></td><td class="d-none d-lg-table-cell"></td>
+                                        {% else %}
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_start_date}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_occurances}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_interval}}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                    <td class="text-info"><strong>Created by Me</strong></td>
+                                    <td class="text-end">
+                                        <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveydetail' survey.id %}">Edit</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            {% for survey in assigned %}
+                                <tr class="align-middle">
+                                    <td>{{survey.survey_name}}</td>
+                                    {% if survey.survey.survey_entity_to_set_times == False %}
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_start_date}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_occurances}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_interval}}</td>
+                                    {% else %}
+                                        {% if survey.survey_start_date == None %}
+                                            <td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td>
+                                        {% else %}
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_start_date}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_occurances}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_interval}}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                    <td class="text-warning"><strong>Assigned</strong></strong></td>
+                                    <td class="text-end">
+                                        <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveydetail' survey.id %}">View</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            {% for survey in closed %}
+                                <tr class="align-middle">
+                                    <td>{{survey.survey_name}}</td>
+                                    {% if survey.survey.survey_entity_to_set_times == False %}
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_start_date}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_occurances}}</td>
+                                        <td class="d-none d-lg-table-cell">{{survey.survey.survey_interval}}</td>
+                                    {% else %}
+                                        {% if survey.survey_start_date == None %}
+                                            <td class="d-none d-lg-table-cell"></td ><td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td>
+                                        {% else %}
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_start_date}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_occurances}}</td>
+                                            <td class="d-none d-lg-table-cell">{{ survey.survey_interval}}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                    <td class="text-danger"><strong>Closed</strong></td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

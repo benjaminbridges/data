@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}Edit Dates{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col m-auto" >
+        <div class="card mt-4" style="max-width:500px">
+            <div class="card-body">
+                <h2>Edit Dates</h2>
+                <h4>Survey: {{survey.survey_name}}</h4>
+
+                <form class="my-4" method="post">
+                    <div class="form-row">
+                        <div class="form-group mb-3">
+                            {{ form.survey_start_date|as_crispy_field }}
+                        </div>
+                        <div class="form-group mb-3">
+                            <td>{{ form.survey_interval|as_crispy_field }}</td>
+                        </div>
+                        <div class="form-group mb-3">
+                            <td>{{ form.survey_occurances|as_crispy_field }}</td>
+                        </div>
+                    </div>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success">Update Dates</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+

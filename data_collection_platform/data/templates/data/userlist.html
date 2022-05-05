@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4 mb-2" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h1>Users</h1>
+                    </div>
+                     {% if request.user.profile.site_permission in 'sa, centalteam, org, entity' %}
+                    <div class="col-2 d-flex justify-content-end align-self-center">
+
+                        <span>
+                            <a href="{% url 'usernew' %}" class="btn btn-outline-success btn-lg">Add User</a>
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center" >
+    {% for user in users %}
+        <div class="card m-2" style="width: 350px; height: 140px;">
+            <div class="row g-0">
+                <div style="width: 120px; height: 120px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"
+                            {% if user.site_permission == 'sa' %}
+                            fill="red"
+                            {% elif user.site_permission == 'org' %}
+                            fill="green"
+                            {% elif user.site_permission == 'centalteam' %}
+                            fill="orange"
+                            {% elif user.site_permission == 'entity' %}
+                            fill="blue"
+                            {% else %}
+                            fill="grey"
+                            {% endif %}
+                             class="bi bi-person-circle p-3 m-auto " viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                        </svg>
+                    <div class="text-center" style="position: 'relative'; margin-top: -15px;
+                        {% if user.site_permission == 'sa' %}
+                        color:red;"> Systems Admin
+                        {% elif user.site_permission == 'org' %}
+                        color:green;"> Org Admin
+                        {% elif user.site_permission == 'centalteam' %}
+                        color:orange;"> Central Team
+                        {% elif user.site_permission == 'entity' %}
+                        color:blue;"> Entity Admin
+                        {% else %}
+                        "> User
+                        {% endif %}
+
+                    </div>
+
+                </div>
+                <div style="width: auto; height: 140px;">
+                    <div class="card-body" style="height: 100%;">
+                        <div style="width: auto; height: 78px;">
+                            <h5 id="cardtitle" class="card-title">{{user.first_name}}<br> {{user.last_name}}</h5>
+                        </div>
+                        <div class ="align-content-end" style="width: auto; height: 40px;">
+                            <a class="btn btn-outline-success btn-sm" href="{% url 'userdetail' user.id %}">View</a>
+                            {% if user.site_permission in 'user, entity' %}
+                            <a class="btn btn-outline-success btn-sm" href="{% url 'useredit' user.id %}">Edit</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+
+</div>
+
+
+
+
+{% endblock %}

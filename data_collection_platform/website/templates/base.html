@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Favicon link -->
+    <link rel="shortcut icon" type="image/png" href="{% static '/images/img.png' %}"/>
+    <!-- link to bootstrap css file -->
+    <link rel="stylesheet" href="{% static 'boot/css/bootstrap.css' %}?{% now 'U' %}">
+    <!-- makes the site device width scaleable -->
+    <meta name ="viewport" contentwidth="device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- link to main css file for my own custom changes -->
+    <link rel="stylesheet" href="{% static 'boot/css/main.css' %}?{% now 'U' %}">
+    <!-- linking to the java script bootstrap, needed for dropdowns and the like -->
+    <script src="{% static 'boot/js/bootstrap.js' %}"></script>
+<!--    <script src="{% static 'boot/js/bootstrap.bundle.js' %}"></script> -->
+<!-- this js is needed to make the popovers work on the final check template but it breaks the navbar -->
+
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+
+
+    <!-- This link is for the icons on the table search -->
+    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css">
+
+
+
+
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap" rel="stylesheet">
+
+
+
+
+
+
+
+</head>
+<body>
+
+<!-- Nav Bar -->
+<nav class="navbar navbar-expand-md navbar-light sticky-top bg-light">
+  <div class="container-fluid">
+    <!--<a class="navbar-brand" href="#">Logo</a> -->
+    <a class="navbar-brand" href="{% url 'index' %}">
+      <img src="{% static '/images/img.png' %}" alt="" width="40" height="40" >
+    </a>
+    <!-- hamburger button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Home
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'index' %}">Home</a>
+        </li> -->
+        <!-- Info
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'info' %}">info</a>
+        </li>
+        Contact
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'contact' %}">Contact</a>
+        </li>
+         Organisations -->
+        <li class="nav-item">
+            {% if request.user.profile.site_permission in 'sa' %}
+            <a class="nav-link" aria-current="page" href="{% url 'orglist' %}" class="nav-link">Organisations</a>
+            {% endif %}
+        </li>
+        <!-- Entities -->
+        <li>
+            {% if request.user.profile.site_permission in 'sa, org' %}
+            <a class="nav-link" aria-current="page" href="{% url 'entitylist' %}", class="nav-link">Churches</a>
+            {% endif %}
+        </li>
+        <!-- Users -->
+        <li>
+            {% if request.user.profile.site_permission in 'sa, org, entity' %}
+            <a class="nav-link" aria-current="page" href="{% url 'userlist' %}", class="nav-link">Users</a>
+            {% endif %}
+        </li>
+        <!-- Surveys - User -->
+        <li>
+            {% if request.user.profile.site_permission in 'user' %}
+            <a class="nav-link" aria-current="page" href="{% url 'mysurveys' %}" >My Surveys</a>
+            {% endif %}
+        </li>
+        <!-- Surveys - All -->
+        {% if request.user.profile.site_permission in 'sa, org, entity' %}
+        <li class="nav-item dropdown">
+          <a aria-current="page" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Surveys
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% if request.user.profile.site_permission in 'sa' %}
+              <li><a href="{% url 'surveynew' %}" class="dropdown-item">New Survey</a></li>
+              <li><a href="{% url 'surveylist' %}" class="dropdown-item">Surveys</a></li>
+              {% endif %}
+              <li><a href="{% url 'surveyadmin' %}" class="dropdown-item">Survey Admin</a></li>
+              <li><a href="{% url 'allsurveys' %}" class="dropdown-item">All Surveys</a></li>
+              <li><a href="{% url 'mysurveys' %}" class="dropdown-item">My Surveys</a></li>
+          </ul>
+        </li>
+        {% endif %}
+        <!-- Reports - All -->
+        <li class="nav-item dropdown">
+          <a aria-current="page" class="nav-link dropdown-toggle" href="#" id="navbarDropdownreport" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Reports
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownreport">
+              <li><a class="nav-link" aria-current="page" href="{% url 'report' %}" class="nav-link">Attendance Report</a></li>
+              {% if request.user.profile.site_permission in 'sa, org, entity' %}
+              <li><a class="nav-link" aria-current="page" href="{% url 'givingreport' %}" class="nav-link">Giving Report</a></li>
+              {% endif %}
+              <li><a class="nav-link" aria-current="page" href="{% url 'allanswers' %}" class="nav-link">All Answers</a></li>
+          </ul>
+        </li>
+
+
+      </ul>
+  <!--
+       <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+  -->
+      <ul class="navbar-nav">
+          <!--  <li>
+                <a href="{% url 'myprofile' %}" class="nav-link">{{request.user.profile.first_name }}</a>
+            </li> -->
+
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="" id="navbar2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{request.user.profile.first_name }}
+              </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbar2Dropdown">
+                     <li> <a href="{% url 'myprofile' %}" class="nav-link">My Profile</a></li>
+                  </ul>
+          </li>
+            <li>
+                <a class="nav-link active" aria-current="page" href="{% url 'logoutUser' %}" class="nav-link">Logout</a>
+            </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% for message in messages %}
+<div class="container-fluid p-0 mb-0">
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+
+<div class="container-fluid">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+    <script src="extensions/export/bootstrap-table-export.js"></script>
+    <script>
+      function starsSorter(a, b) {
+        if (new Date(a) > new Date(b)) return 1;
+        if (new Date(a) < new Date(b)) return -1;
+        return 0;
+        }
+    </script>
+
+
+
+
+</html>

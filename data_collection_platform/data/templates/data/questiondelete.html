@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Delete Question{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h1>Delete Question</h1>
+                <p> Are you sure you want to delete the question: <br>
+                    <strong>{{question.question_content}}</strong></p>
+                <form action="{% url 'questiondelete' survey.id question.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6"><a href="{% url 'surveydetail' survey.id %}" class="btn btn-outline-primary " type="submit">Cancel</a></div>
+                        <div class="col-6 d-flex justify-content-end align-self-start "><button class="btn btn-outline-danger " type="submit">Delete</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

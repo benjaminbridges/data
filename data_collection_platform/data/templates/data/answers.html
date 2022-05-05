@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Answer{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <H2>{{survey}}</H2>
+                <table class="table table-borderless table-sm m-0">
+                    <tr>
+                        <td>
+                            Breakdown:
+                        </td>
+                        <td>
+                            <i>{{surveybreakdown.surveybreakdown_name}}</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Church
+                        </td>
+                        <td>
+                            <i>{{entity}}</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Reminder Date
+                        </td>
+                        <td>
+                            <i>{{surveyinstance.survey_reminder_date}}</i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Date Range
+                        </td>
+                        <td>
+                            <i>{{surveyinstance.survey_start_date}} to {{surveyinstance.survey_end_date}}</i>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h1><strong>{{question.question_content}}</strong></h1>
+                <form method="POST">
+                    {{form|crispy}}
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-success btn-block" type="submit">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

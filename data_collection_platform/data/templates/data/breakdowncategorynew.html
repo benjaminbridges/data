@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}New Question{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col ms-auto" style="max-width:500px" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h2>Survey: {{survey.survey_name}}</h2>
+
+                <table class="table table-sm w-auto m-0 table-borderless ">
+                    {% if survey.survey_entity_to_set_times == False %}
+                        <tr>
+                            <td>
+                                Start Date:
+                            </td>
+                             <td>
+                                {{survey.survey_start_date}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Interval:
+                            </td>
+                            <td>
+                                {{survey.survey_interval}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Occurances:
+                            </td>
+                            <td>
+                                {{survey.survey_occurances}}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h2>Add Reminder Category</h2>
+                <form class="my-4" method="post">
+                    <div class="form-row">
+                        <div class="form-group mb-3">
+                            {{ form.category|as_crispy_field }}
+                        </div>
+                        <div class="form-group mb-3">
+                            <td>{{ form.category_description|as_crispy_field }}</td>
+                        </div>
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col me-auto" style="max-width:500px" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h2>Reminder Categories</h2>
+                <table class="table table-striped table-hover mt-4 ">
+                    <tr class="align-middle">
+                        <th>Category</th>
+                        <th>Category Description</th>
+                    </tr>
+                    {% for breakdowncategory in breakdowncategorys %}
+                        <tr class="align-middle">
+                            <td>{{breakdowncategory.category}}</td>
+                            <td>{{breakdowncategory.category_description}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% if breakdowncategorys.count > 0 %}
+                <a class="btn btn-outline-success btn-lg " href="{% url 'surveylist' %}" role="button" >Complete Survey Setup</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

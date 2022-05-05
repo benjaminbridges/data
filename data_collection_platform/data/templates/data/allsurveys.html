@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}All Surveys{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h1>All Surveys</h1>
+                        Surveys for all users in your assigned entities
+                    </div>
+                    {% if nosurveys == False %}
+                        <div class="col-2 d-flex justify-content-end align-self-end">
+                            <button class="btn btn-lg btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Filter
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="row d-flex justify-content-end">
+                    <div {% if searched == 0 %}
+                          class="collapse"
+                          {% else %}
+                          class="collapse show"
+                          {% endif %}
+                          id="collapseExample" ><hr>
+                        <form method="'get">
+                            <div class="row">
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ surveyfilter.form.survey|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ surveyfilter.form.entity|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ surveyfilter.form.breakdown|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ surveyfilter.form.profile|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col dflex d-flex align-self-end mb-3 ">
+                                    <button class="btn btn-outline-success mt-2" type="submit">
+                                        Search
+                                    </button>
+                                </div>
+                                  {% if searched == True %}
+                                    <div class="col dflex d-flex justify-content-end align-self-end mb-3 ">
+                                        <a class="btn btn-outline-danger mt-2" href="allsurveys">Clear Filters</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4"  >
+            <div class="card-body">
+                   <div class="row">
+                    <div class="col">
+                        <h3>Surveys to Complete</h3>
+                        <p>All uncompleted surveys</p>
+                    </div>
+                    <div class="col d-flex justify-content-end align-self-end ">
+                        <div class=" #table1 buttons-toolbar mb-3"></div>
+                    </div>
+                </div>
+                <div style="max-height:500px; overflow-y:auto;">
+
+                    <table id="table1" data-toggle="table" class="table table-borderless table-striped table-hover"
+                           data-search="true" data-show-columns="true" data-show-columns-toggle-all="true"
+                           data-buttons-toolbar=".buttons-toolbar" data-minimum-count-columns="3">
+                        <thead>
+                        <tr>
+                            <th data-sortable="true" data-sorter="starsSorter">Date</th>
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Time</th>
+                            <th class="d-none d-lg-table-cell">Date range</th>
+                            <th data-sortable="true">Church</th>
+                            <th data-sortable="true">Survey</th>
+                            <th data-sortable="true">Reminder</th>
+                            <th data-sortable="true">User</th>
+                            <th class="d-flex justify-content-end" >Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for overduesurvey in overduesurveys %}
+                                <tr>
+                                    <td>{{overduesurvey.survey_date}}</td>
+                                    <td class="d-none d-lg-table-cell">{{overduesurvey.survey_time}}</td>
+                                    <td class="d-none d-lg-table-cell">{{overduesurvey.survey_start_date}} to {{overduesurvey.survey_end_date}} </td>
+                                    <td>{{overduesurvey.surveybreakdown.surveyentity.entity.entity_name}}</td>
+                                    <td>{{overduesurvey.surveybreakdown.surveyentity.survey.survey_name}}</td>
+                                    <td>{{overduesurvey.surveybreakdown.surveybreakdown_name}}</td>
+                                    <td>{{overduesurvey.profile.first_name}} {{overduesurvey.profile.last_name}}</td>
+                                    <td class="text-end text-nowrap">
+                                        <a class="btn btn-outline-secondary btn-sm m-0" href="{% url 'surveyinstanceallrejection' overduesurvey.id %}">Not Needed</a>
+                                        <a class="btn btn-outline-success btn-sm m-0" href="{% url 'answers' overduesurvey.id 0 %}">Answer</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h3>Upcoming Surveys</h3>
+                        <p>Next 2 weeks of surveys</p>
+                    </div>
+                    <div class="col d-flex justify-content-end align-self-end ">
+                        <div class="buttons-toolbar2 mb-3"></div>
+                    </div>
+                </div>
+                <div style="max-height:500px; overflow-y:auto;">
+                    <table id="table2" data-toggle="table" class="table table-borderless table-striped table-hover"
+                           data-search="true" data-buttons-toolbar=".buttons-toolbar2">
+                        <thead>
+                            <tr>
+                                <th data-sortable="true" data-sorter="starsSorter">Date</th>
+                                <th data-sortable="true">Survey</th>
+                                <th data-sortable="true">Church</th>
+                                <th data-sortable="true">Reminder</th>
+                                <th data-sortable="true">User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for upcomingsurvey in upcomingsurveys %}
+                            <tr>
+                                <td>{{upcomingsurvey.survey_date}}</td>
+                                <td>{{upcomingsurvey.surveybreakdown.surveyentity.survey.survey_name}}</td>
+                                <td>{{upcomingsurvey.surveybreakdown.surveyentity.entity.entity_name}}</td>
+                                <td>{{upcomingsurvey.surveybreakdown.surveybreakdown_name}}</td>
+                                <td>{{upcomingsurvey.profile.first_name}} {{upcomingsurvey.profile.last_name}}</td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h3>Completed Surveys</h3>
+                        <p>Surveys that have been completed</p>
+                    </div>
+                    <div class="col d-flex justify-content-end align-self-end ">
+                        <div class="buttons-toolbar3 mb-3"></div>
+                    </div>
+                </div>
+                <div style="max-height:500px; overflow-y:auto;">
+                    <table id="table3" data-toggle="table" class="table table-borderless table-striped table-hover"
+                           data-search="true" data-buttons-toolbar=".buttons-toolbar3">
+                        <thead>
+                            <tr>
+                                <th data-sortable="true" data-sorter="starsSorter">Date</th>
+                                <th data-sortable="true">Survey</th>
+                                <th data-sortable="true">Church</th>
+                                <th data-sortable="true">Reminder</th>
+                                <th data-sortable="true">User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for completedsurvey in completedsurveys %}
+                            <tr>
+                                <td>{{completedsurvey.survey_date}}</td>
+                                <td>{{completedsurvey.surveybreakdown.surveyentity.survey.survey_name}}</td>
+                                <td>{{completedsurvey.surveybreakdown.surveyentity.entity.entity_name}}</td>
+                                <td>{{completedsurvey.surveybreakdown.surveybreakdown_name}}</td>
+                                <td>{{completedsurvey.profile.first_name}} {{completedsurvey.profile.last_name}}</td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

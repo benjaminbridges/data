@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- link to bootstrap css file -->
+    <link rel="stylesheet" href="{% static 'boot/css/bootstrap.css' %}?{% now 'U' %}">
+    <!-- makes the site device width scaleable -->
+    <meta name ="viewport" content=""width="device-width, initial-scale=1,shrink-to-fit=no">
+    <!-- link to main css file for my own custom changes -->
+    <link rel="stylesheet" href="{% static 'boot/css/main.css' %}?{% now 'U' %}">
+    <!-- linking to the java script bootstrap, needed for dropdowns and the like -->
+    <script src="{% static 'boot/js/bootstrap.js' %}"></script>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?{% now 'U' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+
+{% for message in messages %}
+
+
+
+<div class="container-fluid p-0">
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+
+<div class="container-fluid">
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body m-auto">
+                <img src="{% static '/images/img.png' %}" alt="" width="100" height="100" >
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% block content %}
+
+
+    {% endblock %}
+</div>
+
+
+</body>
+</html>

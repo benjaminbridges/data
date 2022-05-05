@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Remove User{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h1>Remove Users</h1>
+                <p> Are you sure you want to remove this user? <br>
+                <form action="{% url 'surveybreakdownuserdelete' pid bdid sid eid seid %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6"><a  href="{% url 'surveybreakdownedit' sid eid seid %}" class="btn btn-outline-primary " type="submit">Cancel</a></div>
+                        <div class="col-6 d-flex justify-content-end align-self-start "><button class="btn btn-outline-danger " type="submit">Remove</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

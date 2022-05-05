@@ -1,0 +1,30 @@
+{% extends "basicbase.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h1>Register</h1>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <input type="submit" name="CreateUser">
+                </form>
+                {{ form.errors }}
+                <p>Already have an account? - <a href="{% url 'loginpage' %}">Login</a></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

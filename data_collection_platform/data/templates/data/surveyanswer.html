@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Answer Survey{% endblock %}
+
+{% block content %}
+<h1>Answer Survey</h1>
+<p>{{ suvrec.id }}</p>
+<h2>ENtity:</h2>
+<h2>Survey:</h2>
+<h2>Date: </h2>
+
+<form method="post">
+    {% for question in questions %}
+    <table>
+        {{ question.question_content }}
+        {{ form }}
+        {{ form.answer_text.as_hidden }}
+    </table>
+    {% endfor %}
+    {% csrf_token %}
+    <button type="submit">Create</button>
+</form>
+{% endblock %}

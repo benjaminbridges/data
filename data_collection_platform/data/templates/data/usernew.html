@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}New User{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h2>New User</h2>
+                {{ form.media }}
+                <form method="post" enctype="multipart/form-data">
+                    <table>
+                        {{ form|crispy }}
+                        <div class="form-group mb-3">
+                            <label for="permission">Site Permission</label>
+                            <select id="permission" name="permission" class="form-control">
+                                <option value="user">User</option>
+                                <option value="entity">Entity Administrator</option>
+                            </select>
+                        </div>
+                    </table>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success mt-4">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

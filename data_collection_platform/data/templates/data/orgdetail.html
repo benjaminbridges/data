@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{org.org_name}}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h2> {{org.org_name}}</h2>
+                        <p>Description: {{org.org_description}}</p>
+                    </div>
+                    <div class="col-2 d-flex justify-content-end align-self-center">
+                        <img src="{{org.org_logo.url}}" class="float-right m-2" height="90px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <h2>Churches</h2>
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th>Name</th>
+                            <th>Primary Email</th>
+                            <th>Website</th>
+                            <th>Address</th>
+                            <th>Post Code</th>
+                            <th>Town/City</th>
+                            <th>Organisation</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                            {% for entity in entitys %}
+                                <tr >
+                                    <td>{{entity.entity_name}}</td>
+                                    <td><a class="simple" target="_blank" href="mailto:{{entity.entity_email_primary}}">{{entity.entity_email_primary}}</a></td>
+                                    <td><a class="simple" target="_blank" href = "{{entity.entity_website}}">{{entity.entity_website}}</a></td>
+                                    <td>{{entity.entity_address}}</td>
+                                    <td>{{entity.entity_postcode}}</td>
+                                    <td>{{entity.entity_city_town}}</td>
+                                    <td>{{entity.org.org_name}}</td>
+                                    <td class="text-end">
+                                        <a href="{% url 'entitydetail' entity.id %}" class="btn btn-outline-success btn-sm m-0">View</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

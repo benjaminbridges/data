@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Delete Survey{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h1>Delete Survey</h1>
+                <p> Are you sure this survey is not needed? <br>
+                    <strong>{{surveyinstance}}</strong></p>
+                <form action="{% url 'surveyinstancerejection' surveyinstance.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-6"><a href="{% url 'allsurveys' %}" class="btn btn-outline-primary " type="submit">Cancel</a></div>
+                        <div class="col-6 d-flex justify-content-end align-self-start "><button class="btn btn-outline-danger " type="submit">Mark as not needed</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}{{entity.entity_name}} Detail{% endblock %}
+
+{% block content %}
+
+
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h2>{{entity.entity_name}}</h2>
+
+                        <table class="table table-sm w-auto m-0 table-borderless ">
+                            <tr>
+                                <td>
+                                    Primary Email:
+                                </td>
+                                <td >
+                                    <a class="simple" target="_blank" href="mailto:{{entity.entity_email_primary}}">{{entity.entity_email_primary|default_if_none:""}}</a>
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td>
+                                        Website:
+                                    </td>
+                                     <td>
+                                        <a class="simple" target="_blank" href = "{{entity.entity_website}}">{{entity.entity_website|default_if_none:""}}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Address:
+                                    </td>
+                                    <td>
+                                        {{entity.entity_address|default_if_none:""}}
+                                        <br/>{{entity.entity_city_town|default_if_none:""}}
+                                        <br/>{{entity.entity_postcode|default_if_none:""}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Year Founded:
+                                    </td>
+                                    <td>
+                                        {{entity.entity_year_founded|stringformat:"s"}}
+                                    </td>
+                                </tr>
+
+                        </table>
+
+                    </div>
+                    <div class="col-2 d-flex justify-content-end align-self-center">
+                        <img src="{{org.org_logo.url}}" class="float-right m-2" height="90px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <h2>Surveys</h2>
+                    <p>All surveys assigned to this entity</p>
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                            {% for survey in surveys %}
+                                <tr>
+                                    <td>{{survey.survey_name}}</td>
+                                    <td>{{survey.category.category_name}}</td>
+                                    <td class="text-end">
+                                        <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveydetail' survey.id %}">View</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

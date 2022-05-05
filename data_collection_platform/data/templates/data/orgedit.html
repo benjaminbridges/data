@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Org: {{org}}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h2>Edit: {{org.org_name}} </h2>
+                {{ form.media }}
+                <form method="post" enctype="multipart/form-data">
+                    <table>
+                        {{ form|crispy }}
+                        <img src="{{org.org_logo.url}}" height="90px">
+                    </table>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success mt-4">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

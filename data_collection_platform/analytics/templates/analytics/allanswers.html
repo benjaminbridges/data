@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Report{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h1>All Answers</h1>
+                    </div>
+                    <div class="col-2 d-flex justify-content-end align-middle">
+
+                        <button class="btn btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"                                aria-controls="collapseExample">
+                            Filters
+                        </button>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-end">
+                    <div   {% if searched == 0 %}
+                           class="collapse"
+                           {% else %}
+                           class="collapse show"
+                           {% endif %}
+                           id="collapseExample" ><hr>
+                        <form method="'get">
+                            <div class="row">
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ answerfilter.form.entity|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card" style="height:100%;">
+                                        <div class="card-body scroll">
+                                    {{ answerfilter.form.survey|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card" style="height:100%;">
+                                        <div class="card-body scroll">
+                                    {{ answerfilter.form.breakdown|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col dflex d-flex align-self-end mb-3">
+                                    <button class="btn btn-outline-success mt-2" type="submit">
+                                        Search
+                                    </button>
+                                </div>
+                                {% if searched == True %}
+                                    <div class="col dflex d-flex justify-content-end align-self-end mb-3 ">
+                                        <a class="btn btn-outline-danger mt-2" href="report">Clear Filters</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+               <!-- <nav>
+                    <ul class="pagination pagination-sm justify-content-center">
+                    {% if combinedanswers.has_previous %}
+                        <li class="page-item">
+                            {% if searched == 0 %}
+                            <a class="page-link" href="?page=1">First</a>
+                            {% else %}
+                            <a class="page-link" href="{{ request.get_full_path }}&page=1">First</a>
+                            {% endif %}
+                        </li>
+                        <li class="page-item">
+                            {% if searched == 0 %}
+                                <a class="page-link" href="?page={{combinedanswers.previous_page_number}}">Previous</a>
+                            {% else %}
+                                <a class="page-link" href="{{ request.get_full_path }}&page={{combinedanswers.previous_page_number}}">Previous</a>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+
+                    {% for num in combinedanswers.paginator.page_range %}
+                        {% if combinedanswerscombinedanswers.number   == num %}
+                            <li class="page-item active">
+                                {% if searched == 0 %}
+                                    <a class="page-link" href="?page={{num}}">{{num}}</a>
+                                {% else %}
+                                    <a class="page-link" href="{{ request.get_full_path }}&page={{num}}">{{num}}</a>
+                                {% endif %}
+                            </li>
+                        {% elif num > integeranswers.number|add:'-3' and num < combinedanswers.number|add:'3' %}
+                            <li class="page-item">
+                                {% if searched == 0 %}
+                                    <a class="page-link" href="?page={{num}}">{{num}}</a>
+                                {% else %}
+                                    <a class="page-link" href="{{ request.get_full_path }}&page={{num}}">{{num}}</a>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                     {% if combinedanswers.has_next %}
+                         <li class="page-item">
+                            {% if searched == 0 %}
+                                <a class="page-link" href="?page={{combinedanswers.next_page_number}}">Next</a>
+                             {% else %}
+                                <a class="page-link" href="{{ request.get_full_path }}&page={{combinedanswers.next_page_number}}">Next</a>
+                             {% endif %}
+                         </li>
+                        <li class="page-item">
+                            {% if searched == 0 %}
+                                <a class="page-link" href="?page={{combinedanswers.paginator.num_pages}}">Last</a>
+                            {% else %}
+                                <a class="page-link" href="{{ request.get_full_path }}&page={{combinedanswers.paginator.num_pages}}">Last</a>
+                            {% endif %}
+                        </li>
+
+                    {% endif %}
+                    </ul>
+                </nav> -->
+                <div class="col d-flex justify-content-end align-self-middle mb-2">
+                    <div class="buttons-toolbar"></div>
+                </div>
+                <table id="table1" data-toggle="table" class="table table-borderless table-striped table-hover"
+                       data-search="true"
+                       data-show-columns="true"
+                       data-show-columns-toggle-all="true"
+                       data-buttons-toolbar=".buttons-toolbar"
+                       data-minimum-count-columns="2"
+                       style = "width:100%;">                    <thead>
+                        <tr>
+                            <th data-sortable="true">
+                                Survey
+                            </th>
+                            <th data-sortable="true">
+                                Entity
+                            </th>
+                            <th data-sortable="true">
+                                Reminder
+                            </th>
+                            <th data-sortable="true">
+                                User
+                            </th>
+                            <th data-sortable="true" data-sorter="starsSorter">
+                                Date
+                            </th>
+                            <th data-sortable="true">
+                                Question
+                            </th>
+                            <th data-sortable="true">
+                                Answer Type
+                            </th>
+                            <th data-sortable="true">
+                                Answer
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for combinedanswer in combinedanswers %}
+                        <tr>
+                            <td>
+                                {{combinedanswer.surveyinstance.surveybreakdown.surveyentity.survey.survey_name}}
+                            </td>
+                            <td>
+                                {{combinedanswer.surveyinstance.surveybreakdown.surveyentity.entity.entity_name}}
+                            </td>
+                            <td>
+                                {{combinedanswer.surveyinstance.surveybreakdown.surveybreakdown_name}}
+                            </td>
+                            <td>
+                                {{combinedanswer.surveyinstance.profile.first_name}} {{combinedanswer.surveyinstance.profile.last_name}}
+                            </td>
+                            <td>
+                                {{combinedanswer.surveyinstance.survey_date}}
+                            </td>
+                            <td>
+                                {{combinedanswer.question.question_content}}
+                            </td>
+                            <td>
+                                {% if combinedanswer.answer_integer != Null %}
+                                Integer
+                                {% else %}
+                                Float
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{combinedanswer.answer_integer}}{{combinedanswer.answer_float}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% for shorttextanswer in shorttextanswers %}
+                        <tr>
+                            <td>
+                                {{shorttextanswer.surveyinstance.surveybreakdown.surveyentity.survey.survey_name}}
+                            </td>
+                            <td>
+                                {{shorttextanswer.surveyinstance.surveybreakdown.surveyentity.entity.entity_name}}
+                            </td>
+                            <td>
+                                {{shorttextanswer.surveyinstance.surveybreakdown.surveybreakdown_name}}
+                            </td>
+                            <td>
+                                {{shorttextanswer.surveyinstance.profile.first_name}} {{shorttextanswer.surveyinstance.profile.last_name}}
+                            </td>
+                            <td>
+                                {{shorttextanswer.surveyinstance.survey_date}}
+                            </td>
+                            <td>
+                                {{shorttextanswer.question.question_content}}
+
+                            </td>
+                            <td>
+                                Short Text
+                            </td>
+                            <td>
+                                {{shorttextanswer.answer_short_text}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Report{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h1>Attendance and Participation Report</h1>
+                    </div>
+                    <div class="col-2 d-flex justify-content-end align-middle">
+
+                        <button class="btn btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"                                aria-controls="collapseExample">
+                            Filters
+                        </button>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-end">
+                    <div   {% if searched == 0 %}
+                           class="collapse"
+                           {% else %}
+                           class="collapse show"
+                           {% endif %}
+                           id="collapseExample" ><hr>
+                        <form method="'get">
+                            <div class="row">
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ answerfilter.form.entity|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card" style="height:100%;">
+                                        <div class="card-body scroll">
+                                    {{ answerfilter.form.survey|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card" style="height:100%;">
+                                        <div class="card-body scroll">
+                                    {{ answerfilter.form.breakdown|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col dflex d-flex align-self-end mb-3">
+                                    <button class="btn btn-outline-success mt-2" type="submit">
+                                        Search
+                                    </button>
+                                </div>
+                                {% if searched == True %}
+                                    <div class="col dflex d-flex justify-content-end align-self-end mb-3 ">
+                                        <a class="btn btn-outline-danger mt-2" href="report">Clear Filters</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h2>Summary</h2>
+                    </div>
+
+                    <div class="col-6 d-flex justify-content-end align-self-middle">
+                        <div class="buttons-toolbar"></div>
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <button class="btn btn-outline-success ms-1" type="submit">Download</button>
+
+                        </form>
+
+                    </div>
+                </div>
+                <table id="table1" data-toggle="table" class="table table-borderless table-striped table-hover"
+                       data-search="true"
+                       data-show-columns="true"
+                       data-show-columns-toggle-all="true"
+                       data-buttons-toolbar=".buttons-toolbar"
+                       data-minimum-count-columns="2"
+                       style = "width:100%;">
+                    <thead>
+                    <tr>
+                        {% for header in headers %}
+                            <th >
+                                {{header}}
+                            </th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for listolist in listolists %}
+                        <tr>
+                            <td>
+                                {{ listolist.0|date:'M' }}
+                            </td>
+                            <td>
+                                {{ listolist.1|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.2|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.3|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.4|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.5|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.6|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.7|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.8|floatformat:0 }}
+                            </td>
+                            <td>
+                                {{ listolist.9|floatformat:0 }}
+                            </td>
+
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

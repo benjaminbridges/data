@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}Add Reminder {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col m-auto" style="max-width:500px">
+        <div class="card">
+            <div class="card-body">
+
+                <h2>Add Reminder</h2>
+
+                    <form method="post">
+                        <table>
+                            <div>
+                                {{ form.surveybreakdown_name|as_crispy_field }}
+                            </div>
+                             <div class="form-group mb-3">
+                                <label for="category">Reminder category</label>
+                                <select id="category" name="category" class="form-control"
+                                    {% if breakdowncategorys.count == 1 %}
+                                    readonly
+                                    {% endif %}>
+                                    {% for breakdowncategory in breakdowncategorys %}
+                                  <option value="{{ breakdowncategory.category }}">{{ breakdowncategory.category}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="reminder">Reminder day</label>
+                                <select id="reminder" name="reminder" class="form-control" type="date"
+                                        {% if survey.survey_interval != "Weekly" %}
+                                        readonly
+                                        {% endif %}>
+                                    {% for reminderday in reminderdays %}
+                                        <option value="{{ reminderday }}" selected >
+                                            {{ reminderday|date:"l"}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
+                                {{ form.surveybreakdown_time|as_crispy_field }}
+                            </div>
+                            <div>
+                                {{ form.profile|as_crispy_field }}
+                            </div>
+                            <div class="ctrlHolder">
+                                <label for="id_favorite_food" class="form-group">When would you like this reminder to start?<span class="asteriskField">*</span></label><br>
+                                <input type="date" name="otherdate" maxlength="200" name="otherdate" class="textinput textInput form-control" required="true" id="id_surveybreakdown_name">
+                            </div>
+                        </table>
+                        {% csrf_token %}
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-outline-success btn m-0" name="add">Add another reminder</button>
+                        </div>
+
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock %}

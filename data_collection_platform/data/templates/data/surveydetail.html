@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}{{survey.survey_name}} detail{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-9 m-0">
+                        <h1>Survey: {{survey.survey_name}}</h1>
+                        <table class="table table-sm w-auto m-0 table-borderless ">
+                            {% if survey.survey_description != "" %}
+                            <tr>
+                                <td>
+                                    Description:
+                                </td>
+                                <td >
+                                    {{survey.survey_description}}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% if survey.survey_entity_to_set_times == False %}
+                                <tr>
+                                    <td>
+                                        Start Date:
+                                    </td>
+                                     <td>
+                                        {{survey.survey_start_date}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Interval:
+                                    </td>
+                                    <td>
+                                        {{survey.survey_interval}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Occurances:
+                                    </td>
+                                    <td>
+                                        {{survey.survey_occurances}}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row my-2 ">
+                            <div class="col d-flex justify-content-end align-self-start">
+                                {% if itemexists == False %}
+                                    <a class="btn btn-outline-success btn " href="{% url 'surveyedit' survey.id %}" role="button" >Edit Header</a>
+                                {% else %}
+                                    <i class="text-secondary">
+                                        Survey has been<br>
+                                        assigned so is<br>
+                                        no longer editable
+                                    </i>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col d-flex justify-content-end ">
+                                {% if survey.survey_entity_to_set_times == False and itemexists == False %}
+                                    <a class="btn btn-outline-success btn " href="{% url 'surveycentaltimesedit' survey.id %}" role="button" >Edit Dates</a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card-deck mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row no-gutters">
+                        <div class="col-md-8">
+                            <h2>Questions</h2>
+                        </div>
+                        {% if itemexists == False %}
+                        <div class="col-md-4 d-flex justify-content-end align-self-start ">
+                            <a class="btn btn-outline-success btn " href="{% url 'questionadd' survey.id %}" role="button" >Add +</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col">
+                            <table class="table table-striped table-hover ">
+                                <tr class="align-middle">
+                                    <th>Question</th>
+                                    <th>Type</th>
+                                    {% if itemexists == False %}
+                                        <th class="text-end">Action</th>
+                                    {% endif %}
+
+
+                                </tr >
+                                    {% if questions.count == 0 %}
+                                        <tr><td>no questions</td><td></td><td>
+                                    {% else %}
+                                        {% for question in questions %}
+                                            <tr class="align-middle">
+                                                <td>{{question.question_content}}</td>
+                                                <td>{{question.question_type}}</td>
+                                                {% if itemexists == False %}
+                                                    <td class="text-end text-nowrap">
+                                                        <a class="btn btn-outline-success btn-sm m-0" href="{% url 'questionedit' survey.id question.id %}">Edit</a>
+                                                        <a class="btn btn-outline-danger btn-sm m-0" href="{% url 'questiondelete' survey.id question.id %}">Delete</a>
+
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+
+                                        {% endfor %}
+                                    {% endif %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-deck mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row no-gutters">
+                        <div class="col-md-8">
+                            <h2>Reminder Categories</h2>
+                        </div>
+                        <div class="col-md-4 d-flex justify-content-end align-self-start ">
+                            <a class="btn btn-outline-success btn " href="{% url 'breakdowncategoryadd' survey.id %}" role="button" >Add +</a>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col">
+                            <table class="table table-striped table-hover ">
+                                <tr class="align-middle">
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                        <th class="text-end">Action</th>
+
+
+                                </tr >
+                                    {% if breakdowncategorys.count == 0 %}
+                                        <tr><td>no categories</td><td></td><td>
+                                    {% else %}
+                                        {% for breakdowncategory in breakdowncategorys %}
+                                            <tr class="align-middle">
+                                                <td>{{breakdowncategory.category}}</td>
+                                                <td>{{breakdowncategory.category_description}}</td>
+                                                    <td class="text-end text-nowrap">
+                                                        <a class="btn btn-outline-success btn-sm m-0" href="{% url 'breakdowncategoryedit' survey.id breakdowncategory.id %}">Edit</a>
+                                                        <a class="btn btn-outline-danger btn-sm m-0" href="{% url 'breakdowncategorydelete' survey.id breakdowncategory.id %}">Delete</a>
+                                                    </td>
+                                            </tr>
+
+                                        {% endfor %}
+                                    {% endif %}
+                            </table>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row no-gutters">
+                    <div class="col-md-8">
+                        <h2>Assigned to Churches</h2>
+                    </div>
+                    {% if itemexists == False %}
+                    <div class="col-md-4 d-flex justify-content-end align-self-start ">
+                        <a class="btn btn-outline-success btn " href="{% url 'surveyedit' survey.id %}" role="button" >Edit</a>
+                    </div>
+                    {% else %}
+                    <div class="col-md-4 d-flex justify-content-end align-self-start ">
+                        <a class="btn btn-outline-success btn " href="{% url 'surveyaddentity' survey.id %}" role="button" >Add +</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row no-gutters">
+                    <div class="col">
+
+                        <table class="table table-striped table-hover">
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                            {% if questions.count == 0 %}
+                                <tr><td>no entities</td><td></td><td>
+                            {% else %}
+                                {% for entity in entitys %}
+                                    <tr>
+                                        <td>{{entity.entity_name}}</td>
+                                        <td>{{entity.entity_city_town}}</td>
+                                        <td class="text-end text-nowrap"><a class="btn btn-outline-success btn-sm " href="{% url 'entitydetail' entity.id %}" >View</a></td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row my-4  ">
+    <div class="col">
+        <div class="card">
+            <div class="card-body ">
+                <div class=" d-flex justify-content-end align-self-middle ">
+                    {% if itemexists == False %}
+                    <div class="px-3 text-secondary"><em >if you do not want to send out <br>this survey you can delete it: </em></div><div><a class="btn btn-outline-danger btn-lg m-0" href="{% url 'surveydelete' survey.id %}">Delete</a></div>
+                    {% else %}
+                    <div class="px-3 text-secondary"><em class="pr-5">If you do not want to continue <br>this survey you can close it: </em></div><div><a class="btn btn-outline-danger btn-lg m-0" href="{% url 'surveyclose' survey.id %}">Close</a></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

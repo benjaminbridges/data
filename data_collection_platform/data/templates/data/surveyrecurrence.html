@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Survey Occurances{% endblock %}
+
+{% block content %}
+<h1>Add Questions</h1>
+
+<h2>Survey: {{survey.survey_name}}</h2>
+<h3>Entity: {{entity.entity_name}}</h3><h4>{{ seid }}</h4>
+
+
+<ul>
+   {% for question in questions %}
+        <li>
+                {{question.question_content}} - {{question.question_type}}
+        </li>
+    {% endfor %}
+</ul>
+
+
+<form method="post">
+    <table>
+        {{ form }}
+    </table>
+    {% csrf_token %}
+    <button type="submit">Add</button>
+</form>
+
+{{mylist}}
+
+{% endblock %}

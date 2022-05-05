@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Organisations{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h1>Organisations</h1>
+                    </div>
+                     {% if request.user.profile.site_permission in 'sa, org' %}
+                    <div class="col-2 d-flex justify-content-end align-self-center">
+
+                        <span>
+                            <a href="{% url 'orgnew' %}" class="btn btn-outline-success btn-lg">Add Organisation</a>
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+
+                    <table data-toggle="table"  class="table table-borderless  table-striped table-hover" >
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th data-sortable="true">Name</th>
+                                <th data-sortable="true" class="d-none d-lg-table-cell">Description</th>
+                                <th class="d-none d-lg-table-cell">Colour</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                {% for org in orgs %}
+                                    <tr class="align-middle">
+                                        <td><img src="{{org.org_logo.url}}" height="30px"></td>
+                                        <td> <a class="simple" target="_blank" class="simple" target="_blank" href="{% url 'orgdetail' org.id %}" >{{org.org_name}}</a></td>
+                                        <td class="d-none d-lg-table-cell">{{org.org_description}}</td>
+                                        <td class="d-none d-lg-table-cell"><span style="height: 12px;
+                                                        width: 12px;
+                                                        background-color:{{org.org_color}} ;
+                                                        border-radius: 50%;
+                                                        display: inline-block;}"></span>
+                                            {{org.org_color}}</td>
+                                        <td class="text-end text-nowrap">
+                                            <a class="btn btn-outline-success btn-sm m-0" href="{% url 'orgdetail' org.id %}">View</a>
+                                            <a class="btn btn-outline-success btn-sm m-0" href="{% url 'orgedit' org.id %}">Edit</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

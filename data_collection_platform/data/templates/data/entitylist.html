@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Churches{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h2>Churches</h2>
+                    </div>
+                     {% if request.user.profile.site_permission in 'sa, org' %}
+                    <div class="col-2 d-flex justify-content-end align-self-center">
+
+                        <span>
+                            <a href="{% url 'entitynew' %}" class="btn btn-outline-success btn-lg">Add Church</a>
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <!--<table data-toggle="table"  class="table table-borderless  table-striped table-hover" >-->
+                <div class="col d-flex justify-content-end align-self-end ">
+                    <div class="buttons-toolbar mb-3"></div>
+                </div>
+                <table id="table1" data-toggle="table" class="table table-borderless table-striped table-hover"
+                       data-search="true" data-show-columns="true" data-show-columns-toggle-all="true"
+                       data-buttons-toolbar=".buttons-toolbar" data-minimum-count-columns="3">
+                    <thead>
+                        <tr>
+                            <th data-sortable="true">Name</th>
+                            <!--<th data-sortable="true"class="d-none d-lg-table-cell">Primary Email</th>-->
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Website</th>
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Address</th>
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Post Code</th>
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Town/City</th>
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Year Founded</th>
+                            <!--<th data-sortable="true">Organisation</th>-->
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entitys %}
+                            <tr>
+                                <td>{{entity.entity_name}}</td>
+                                <!--<td class="d-none d-lg-table-cell"><a href="mailto:{{entity.entity_email_primary}}">{{entity.entity_email_primary}}</a></td>-->
+                                <td class="d-none d-lg-table-cell"><a class="simple" target="_blank" href = "{{entity.entity_website}}" >{{entity.entity_website|default_if_none:""}}</a></td>
+                                <td class="d-none d-lg-table-cell">{{entity.entity_address|default_if_none:""}}</td>
+                                <td class="d-none d-lg-table-cell">{{entity.entity_postcode|default_if_none:""}}</td>
+                                <td class="d-none d-lg-table-cell">{{entity.entity_city_town|default_if_none:""}}</td>
+                                <td class="d-none d-lg-table-cell">{{entity.entity_year_founded|stringformat:"s"}}</td>
+                                <!--<td><a href="{% url 'orgdetail' entity.org.id %}">{{entity.org.org_name}}</a></td>-->
+                                <td class="text-end text-nowrap">
+                                    <a class="btn btn-outline-success btn-sm m-0" href="{% url 'entityedit' entity.id %}">Edit</a>
+                                    <a class="btn btn-outline-success btn-sm m-0" href="{% url 'entitydetail' entity.id %}">View</a>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

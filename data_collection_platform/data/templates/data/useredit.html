@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}Edit {{user.first_name}} {{user.last_name}}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col m-auto" style="max-width:500px;" >
+        <div class="card mt-4" >
+            <div class="card-body">
+                <h2>Edit: {{user.first_name}} {{user.last_name}}</h2>
+                <form method="post">
+                    <table>
+                        {{ form|crispy }}
+                        {% if user.site_permission in 'user, entity' %}
+                        <div class="form-group mb-3">
+                            <label for="permission">Site Permission</label>
+                            <select id="permission" name="permission" class="form-control">
+                                <option value="user">User</option>
+                                <option value="entity">Entity Administrator</option>
+                            </select>
+                        </div>
+                        {% endif %}
+                    </table>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-success mt-4">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Survey Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10  ">
+                         <h1>Survey Admin</h1>
+                         Assign times, dates, reminders and the regularity of your surveys
+                    </div>
+                    {% if mysurveyset.count != 0 %}
+                    <div class="col-2 d-flex justify-content-end align-self-end">
+                        <button class="btn btn-lg btn-outline-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Filter
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row d-flex justify-content-end">
+                    <div  {% if searched == 0 %}
+                          class="collapse"
+                          {% else %}
+                          class="collapse show"
+                          {% endif %}
+                          id="collapseExample" ><hr>
+                        <form method="'get">
+                            <div class="row">
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ surveyfilter.form.survey|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ surveyfilter.form.entity|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-auto mb-3">
+                                    <div class="card " style="height:100%;">
+                                        <div class="card-body scroll">
+                                            {{ assigned2.form.Status|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col dflex d-flex align-self-end mb-3 ">
+                                    <button class="btn btn-outline-success mt-2" type="submit">
+                                        Search
+                                    </button>
+                                </div>
+                                {% if searched == True %}
+                                <div class="col dflex d-flex justify-content-end align-self-end mb-3 ">
+                                    <a class="btn btn-outline-danger mt-2" href="surveyadmin">Clear Filters</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h2>Surveys</h2>
+                    </div>
+                    <div class="col d-flex justify-content-end align-self-end ">
+                        <div class="buttons-toolbar mb-3"></div>
+                    </div>
+                </div>
+                <div style="max-height:500px; overflow-y:auto;">
+                <table id="table1" data-toggle="table" class="table table-borderless table-striped table-hover"
+                           data-search="true" data-show-columns="true" data-show-columns-toggle-all="true"
+                           data-buttons-toolbar=".buttons-toolbar" data-minimum-count-columns="3">
+                        <thead>
+                        <tr class="align-middle">
+                            <th data-sortable="true" >Name</th>
+                            <th data-sortable="true" >Church</th>
+                            <th data-sortable="true" data-sorter="starsSorter" class="d-none d-lg-table-cell" >Starting Date</th>
+                            <th data-sortable="true" class="d-none d-lg-table-cell">Occurances</th>
+                            <th class="d-none d-lg-table-cell">Interval</th>
+                            <th data-sortable="true">Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for survey in inuse %}
+                    <tr>
+                        <td>{{survey.survey}}</td>
+                        <td>{{survey.entity}}</td>
+                        {% if survey.survey.survey_entity_to_set_times == False %}
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_start_date}}</td>
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_occurances}}</td>
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_interval}}</td>
+                        {% else %}
+                            {% if survey.survey_start_date == None %}
+                                <td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td>
+                            {% else %}
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_start_date}}</td>
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_occurances}}</td>
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_interval}}</td>
+                            {% endif %}
+                        {% endif %}
+                    <td class="text-success"><strong>{{ survey.Status}}</strong></td>
+                    <td class="text-end">
+                            {% if survey.survey.survey_entity_to_set_times == True %}
+                                <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveyinstance' survey.survey.id survey.entity.id survey.id %}">
+                                    {% if survey.survey_start_date == Null %}
+                                    Assign Dates
+                                    {% else %}
+                                    Edit Dates
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                            {% if survey.survey_start_date != Null %}
+                                <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveybreakdownedit' survey.survey.id survey.entity.id survey.id %}">Edit reminders</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% for survey in unassigned %}
+                    <tr>
+                        <td>{{survey.survey}}</td>
+                        <td>{{survey.entity}}</td>
+                        {% if survey.survey.survey_entity_to_set_times == False %}
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_start_date}}</td>
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_occurances}}</td>
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_interval}}</td>
+                        {% else %}
+                            {% if survey.survey_start_date == None %}
+                                <td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td>
+                            {% else %}
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_start_date}}</td>
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_occurances}}</td>
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_interval}}</td>
+                            {% endif %}
+                        {% endif %}
+                    <td class="text-warning"><strong>{{ survey.Status}}</strong></td>
+                    <td class="text-end">
+                            {% if survey.survey.survey_entity_to_set_times == True %}
+                                <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveyinstance' survey.survey.id survey.entity.id survey.id %}">
+                                    {% if survey.survey_start_date == Null %}
+                                    Assign Dates
+                                    {% else %}
+                                    Edit Dates
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                            {% if survey.survey_start_date != Null %}
+                                <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveybreakdown' survey.survey.id survey.entity.id survey.id %}">Set up reminders</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% for survey in assigned %}
+                    <tr>
+                        <td>{{survey.survey}}</td>
+                        <td>{{survey.entity}}</td>
+                        {% if survey.survey.survey_entity_to_set_times == False %}
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_start_date}}</td>
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_occurances}}</td>
+                            <td class="d-none d-lg-table-cell">{{survey.survey.survey_interval}}</td>
+                        {% else %}
+                            {% if survey.survey_start_date == None %}
+                                <td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td><td class="d-none d-lg-table-cell"></td>
+                            {% else %}
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_start_date}}</td>
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_occurances}}</td>
+                                <td class="d-none d-lg-table-cell">{{ survey.survey_interval}}</td>
+                            {% endif %}
+                        {% endif %}
+                    <td class="text-info"><strong>{{ survey.Status}}</strong></td>
+                    <td class="text-end">
+                            {% if survey.survey.survey_entity_to_set_times == True %}
+                                <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveyinstance' survey.survey.id survey.entity.id survey.id %}">
+                                    {% if survey.survey_start_date == Null %}
+                                    Assign Dates
+                                    {% else %}
+                                    Edit Dates
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                            {% if survey.survey_start_date != Null %}
+                                <a class="btn btn-outline-success btn-sm m-0" href="{% url 'surveybreakdownedit' survey.survey.id survey.entity.id survey.id %}">Edit reminders</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}{{entity.entity_name}} Detail{% endblock %}
+
+{% block content %}
+
+
+
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h2>{{user.first_name}} {{user.last_name}}</h2>
+
+                        <table class="table table-sm w-auto m-0 table-borderless ">
+                            <tr>
+                                <td>
+                                    Email:
+                                </td>
+                                <td >
+                                    <a class="simple" target="_blank" href="mailto:{{user.email}}">{{user.email|default_if_none:""}}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Permission:
+                                </td>
+                                 <td>
+                                    {% if user.site_permission == 'sa' %}
+                                    Systems Admin
+                                    {% elif user.site_permission == 'org' %}
+                                    Org Admin
+                                    {% elif user.site_permission == 'centalteam' %}
+                                    Central Team
+                                    {% elif user.site_permission == 'entity' %}
+                                    Entity Admin
+                                    {% else %}
+                                    User
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card mt-4" >
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h2>Entities</h2>
+                    </div>
+                    <div class="col d-flex justify-content-end align-self-end ">
+                        <div class="buttons-toolbar mb-3"></div>
+                    </div>
+                    <table id="table1" data-toggle="table" class="table table-borderless table-striped table-hover"
+                           data-search="true" data-show-columns="true" data-show-columns-toggle-all="true"
+                           data-buttons-toolbar=".buttons-toolbar" data-minimum-count-columns="3">
+                        <thead>
+                            <tr>
+                                <th data-sortable="true">Name</th>
+                                <!--<th data-sortable="true"class="d-none d-lg-table-cell">Primary Email</th>-->
+                                <th data-sortable="true" class="d-none d-lg-table-cell">Website</th>
+                                <th data-sortable="true" class="d-none d-lg-table-cell">Address</th>
+                                <th data-sortable="true" class="d-none d-lg-table-cell">Post Code</th>
+                                <th data-sortable="true" class="d-none d-lg-table-cell">Town/City</th>
+                                <th data-sortable="true" class="d-none d-lg-table-cell">Year Founded</th>
+                                <!--<th data-sortable="true">Organisation</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entity in entitys %}
+                                <tr>
+                                    <td>{{entity.entity_name}}</td>
+                                    <!--<td class="d-none d-lg-table-cell"><a href="mailto:{{entity.entity_email_primary}}">{{entity.entity_email_primary}}</a></td>-->
+                                    <td class="d-none d-lg-table-cell"><a class="simple" target="_blank" href = "{{entity.entity_website}}" >{{entity.entity_website|default_if_none:""}}</a></td>
+                                    <td class="d-none d-lg-table-cell">{{entity.entity_address|default_if_none:""}}</td>
+                                    <td class="d-none d-lg-table-cell">{{entity.entity_postcode|default_if_none:""}}</td>
+                                    <td class="d-none d-lg-table-cell">{{entity.entity_city_town|default_if_none:""}}</td>
+                                    <td class="d-none d-lg-table-cell">{{entity.entity_year_founded|stringformat:"s"}}</td>
+                                    <!--<td><a href="{% url 'orgdetail' entity.org.id %}">{{entity.org.org_name}}</a></td>-->
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
