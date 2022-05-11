@@ -90,10 +90,10 @@ WSGI_APPLICATION = 'data_collection_platform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'platform',
-        'USER': 'postgres',
-        'PASSWORD': 'Nesheim9',
-        'HOST': 'localhost',
+        'NAME': 'azure_sys',
+        'USER': 'crtpgsqladmin',
+        'PASSWORD': 'j%znyoE!P2!zT2TCx63i2&^R*E@5Xc',
+        'HOST': 'pgsqldb-crtdataplatform-prod-001.postgres.database.azure.com',
         'PORT': '5432'
     }
 }

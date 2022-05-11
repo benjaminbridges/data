@@ -15,6 +15,9 @@ admin.site.register(SurveyBreakdown)
 admin.site.register(SurveyBreakdownProfile)
 admin.site.register(BreakdownCategory)
 
+# how are you
+
+
 admin.site.register(SurveyInstance)
 admin.site.register(Question)
 # admin.site.register(Category)
