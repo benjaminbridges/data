@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-!#s9xf!p^+xs!54tgvm=2%g6)$!fu^^fqidq4zeujb8p7or_3o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -87,15 +87,15 @@ WSGI_APPLICATION = 'data_collection_platform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'azure_sys',
-        'USER': 'crtpgsqladmin',
-        'PASSWORD': 'j%znyoE!P2!zT2TCx63i2&^R*E@5Xc',
-        'HOST': 'pgsqldb-crtdataplatform-prod-001.postgres.database.azure.com',
-        'PORT': '5432'
-    }
+DATABASES={
+    'default':{
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME':'postgres',
+        'USER':'crtpostgres',
+        'PASSWORD':'GEjqYiR7ZsCHLgwXHQNT',
+        'HOST':'crtdata.chmxbsrq1w7i.eu-west-2.rds.amazonaws.com',
+        'PORT':'5432'
+        }
 }
 
 

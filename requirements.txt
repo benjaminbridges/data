@@ -21,3 +21,4 @@ datetime2
 django-crispy-forms
 django-filter
 django-appconf
+gunicorn
