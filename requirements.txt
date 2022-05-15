@@ -4,7 +4,7 @@ pip>=22.1
 wheel>=0.36.2
 pytz>=2021.3
 Babel>=2.9.1
-numpy>=1.22.1
+numpy
 setuptools>=57.0.0
 Send2Trash>=1.8.0
 Django>=4.0
@@ -22,3 +22,4 @@ django-crispy-forms>=1.13.0
 django-filter>=21.1
 django-appconf>=1.0.5
 gunicorn>=20.1.0
+whitenoise
