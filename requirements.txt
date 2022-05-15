@@ -7,7 +7,7 @@ Babel>=2.9.1
 numpy
 setuptools>=57.0.0
 Send2Trash>=1.8.0
-Django>=4.0
+Django
 django-image-cropping>=1.7
 sqlparse>=0.4.2
 psycopg2>=2.9.3
