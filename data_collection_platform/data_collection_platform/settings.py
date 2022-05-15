@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
+from .secret import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -90,13 +91,14 @@ WSGI_APPLICATION = 'data_collection_platform.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.postgresql',
-        'NAME':'azure_sys',
-        'USER':'crtpgsqladmin',
-        'PASSWORD':'j%znyoE!P2!zT2TCx63i2&^R*E@5Xc',
-        'HOST':'pgsqldb-crtdataplatform-prod-001.postgres.database.azure.com',
-        'PORT':'5432'
+        'NAME': secretdbname,
+        'USER': secretdbuser,
+        'PASSWORD': secretbdpassword,
+        'HOST': secretdbhost ,
+        'PORT':secretdbport
     }
 }
+
 
 
 # Password validation
