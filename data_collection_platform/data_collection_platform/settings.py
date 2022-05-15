@@ -90,12 +90,12 @@ WSGI_APPLICATION = 'data_collection_platform.wsgi.application'
 DATABASES={
     'default':{
         'ENGINE':'django.db.backends.postgresql',
-        'NAME':'postgres',
-        'USER':'crtpostgres',
-        'PASSWORD':'GEjqYiR7ZsCHLgwXHQNT',
-        'HOST':'crtdata.chmxbsrq1w7i.eu-west-2.rds.amazonaws.com',
+        'NAME':'azure_sys',
+        'USER':'crtpgsqladmin',
+        'PASSWORD':'j%znyoE!P2!zT2TCx63i2&^R*E@5Xc',
+        'HOST':'pgsqldb-crtdataplatform-prod-001.postgres.database.azure.com',
         'PORT':'5432'
-        }
+    }
 }
 
 
